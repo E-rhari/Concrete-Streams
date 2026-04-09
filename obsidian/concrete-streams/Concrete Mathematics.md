@@ -1,0 +1,2 @@
+[Book](https://github.com/LiSamoht/Concrete-Mathematics-Comprehensive-Archive/blob/main/Concrete%20Mathematics%20A%20Foundation%20of%20Computer%20Science%202nd%20Edition.pdf)
+

@@ -1,0 +1,15 @@
+# OS and editor clutter
+.DS_Store
+._*
+Thumbs.db
+ehthumbs.db
+Icon?
+.Spotlight-V100
+.Trashes
+*.swp
+*.swo
+*.tmp
+
+# Obsidian - exclude all configuration
+.obsidian/
+.trash/
