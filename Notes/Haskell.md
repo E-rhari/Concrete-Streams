@@ -113,3 +113,27 @@ sayHello target = "Hello, " ++ target ++ "!"
 
 main = print (timesThree 3, sayHello "World")
 ```
+
+All functions in Haskell are single argument functions. We emulate multiple argument functions by nesting single argument ones. For such, we define the type of the return as a function. Like so:
+```Haskell
+add :: Int -> (Int -> Int)
+```
+Add takes a single `Int` as an argument and returns a function that takes a second `Int` and returns an `Int`. The code bellow implements `add` 
+```Haskell
+add =
+	\first ->
+		\second ->
+			first + second
+```
+As so, `add 1` returns a function of the form `second -> 1 + second`. If we were to take this function and run it with a parameter, we wold have `(add 1) 2`. This way, we can call and emulated multiple function variable like so
+```Haskell
+add 1 2
+```
+We can simplify the syntax of defining this kind of function the same way we did with single parameter ones. Bellow is such implementation as well as a call for it.
+```Haskell
+add :: Int -> Int -> Int
+add first second = first + second
+
+three :: Int
+three = add 1 2
+```
