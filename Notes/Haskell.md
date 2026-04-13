@@ -137,3 +137,67 @@ add first second = first + second
 three :: Int
 three = add 1 2
 ```
+
+### Pattern Matching and Branching
+The most common form of branching in Haskell is *pattern matching*. It inspects a variable looking for a set of fixed pattern in its value or structure, and execute different conde depending on it.
+Applying it to recursion:
+```Haskell
+fib :: Int -> Int
+fib 0 = 1
+fib 1 = 1
+fib n = fib (n-1) + fib (n-2)
+```
+We are pre-establishing establishing return values for specific arguments in `fib`. If it gets a 0, it return a 1. If it gets a 1, it returns a 1. If it gets anything else, it returns a value calculated recursively. 
+ However, the order does matter. It is similar to a `switch` in C, testing the value for the argument until it fins a match. Writing `fib n` is like the `default` in a switch.  
+ ```Haskell
+ -- bad code:
+fib :: Int -> Int
+fib 0 = 1
+fib n = fib (n-1) + fib (n-2)
+fib 1 = 1
+ ```
+The code above would math the call `fib 1` to the pattern `fib n`, which would break the code since`fib (1-2)` is not defined.
+
+This also works for strings, characters, tuples and some other. The underscore `_` matches any pattern and ignores the value.
+```Haskell
+-- Illustrive but functional gibberish
+match :: Int -> String -> (Int, (Int, String)) -> Int
+match 0 "Hello" (1, (2, "No")) = 300
+match k "x" (1, (2, "No")) = k
+match 0 "x" (2, _) = 500
+match _ _ _ = -1
+```
+
+There is an even more similar structure to a `switch`, a `case ... of`, as shown bellow.
+```Haskell
+cases :: (Int, Int) -> String
+cases tuple =
+	case tuple of
+		(0,0) -> "Nones"
+		(1,1) -> "Ones"
+		(1, _) -> "First one"
+		_ -> "Other"
+```
+
+There is also *function guards* that decide between pieces of a function declaration. This only works for declarations.
+```Haskell
+comparison :: Int -> Int -> String
+comparison a b
+	| a < b = "Less"
+	| a > b = "Greater"
+	| otherwhise = "Equal"
+```
+
+At last, there is also the conventional (although not traditional) `if .. then .. else` statement. All of its components (`if`, `then` and `else`) must be present. It is closer to the ternary operator than the traditional if.
+```Haskell
+comparison :: Int -> Int -> String
+comparison a b =
+  if a < b
+  then "Less"
+  else
+    if a > b
+    then "Greater"
+    else "Equal"
+```
+
+There is no looping operator.
