@@ -13,3 +13,6 @@ Icon?
 # Obsidian - exclude all configuration
 .obsidian/
 .trash/
+
+# Weird linux stuff
+*.directory

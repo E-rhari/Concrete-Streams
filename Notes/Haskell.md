@@ -201,3 +201,31 @@ comparison a b =
 ```
 
 There is no looping operator.
+
+## Declaring and Creating Data Types
+[Monday Morning Haskell - Data Types](https://mmhaskell.com/liftoff/data-types)
+### `data` and Constructors
+The most common way to create a new data type is by using the keyword `data`
+```Haskell
+data MyType = Constructor Int
+```
+`MyType` is the type's name. It is not a variable nor a value, so you can't do `variable = MyType`, but rather `variable :: MyType`. The standard for datatype naming is CammelCaps. 
+#### Constructors
+A constructor is a special type of expression that creates an object of the datatype. 
+
+It creates a single function`Constructor` of type `Int -> MyType`. That means, we create a variable of type `MyType` by passing it an `Int`. Every time we want to create a variable of this type, we have to call the constructor method. 
+```Haskell
+variable :: MyType
+variable = Constructor 2
+```
+
+Notice that `Constructor isn't a keyword`. We could've called it anything, like `MyTypeConstructor`, `Cons`, `MyType` or literally anything, like `EternalShrineMaiden`. The standard it to use CammelCaps. though.
+
+We can overload the constructors for a datatype. separating them by a pipe (`|`) on the right of the constructor signature.
+```Haskell
+data MyType = 
+    FirstConstructor  Int    |
+    SecondConstructor String |
+    ThirdConstructor Int Int
+```
+
