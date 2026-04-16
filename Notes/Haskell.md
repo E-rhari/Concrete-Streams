@@ -138,6 +138,40 @@ three :: Int
 three = add 1 2
 ```
 
+#### Calling Functions
+Functions are left associative, so calling
+```Haskell
+f g h x
+```
+is equivalent to
+```Haskell
+((f g) h) x
+```
+#### Defining operators
+[Custom Operators in Haskell](https://medium.com/@adambrohl/custom-operators-in-haskell-f7249590c1f)
+In Haskell, operators are functions (including the basic ones already defined in the language, such as `+` or `-`).
+
+The syntax is to put the operator inside parentheses, like so
+```Haskell
+(¬-¬) :: Int -> Int -> Int
+```
+where our operator would be used like `9 ¬-¬ 7`. Any Unicode Symbol/Punctuation can be used for operators (that is, no alphanumerical characters). 
+
+Their implementation is defined through pattern matching
+```Haskell
+a ¬-¬ b = (a-b)*a
+```
+
+You can write operators for as many arguments as you want, however if you do so it must be called as prefix rather than infix., like a normal function.
+```Haskell
+(!!°-°!!) :: Int -> Int -> Int -> Int -> Int
+(!!°-°!!) a b c d = (a+b+c+d)*a*b*c*d
+
+(!!°-°!!) 8 5 6 13
+```
+It's possible to use any operator as a prefix.
+
+
 ### Pattern Matching and Branching
 The most common form of branching in Haskell is *pattern matching*. It inspects a variable looking for a set of fixed pattern in its value or structure, and execute different conde depending on it.
 Applying it to recursion:

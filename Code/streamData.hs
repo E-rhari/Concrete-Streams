@@ -8,11 +8,10 @@ data Stream a = Cons a (Stream a)
 -}
 
 (≺) :: a -> Stream a -> Stream a
-a ≺ s = Cons a s
+a ≺ s = Cons a s    -- To run "a ≺ s" is the same to excecute Cons a s,
+                    -- that is, it creates a new Stream with 'a' as the head and 's' as the tail
 
 {- -- All Functions bellow do the same as streamHead <Stream> -- 
-takeHead :: a -> Stream a
-takeHead value = Cons {streamHead=value, streamTail=undefined}
 
 takeHead :: Stream a -> a
 takeHead stream = case stream of
@@ -25,7 +24,7 @@ takeHead3 :: Stream a -> a
 takeHead3 s = streamHead s
 -}
 
-{- -- A thig for practicing instances
+{- -- A thing for practicing instances
 instance Functor (Stream a) where
     fmap :: (a -> b) -> Stream a -> Stream b
     fmap f s = undefined
@@ -36,8 +35,8 @@ streamEnd :: a
 streamEnd = error "Theoratically Impossible"
 
 test :: Stream Int
-test = Cons {streamHead=9, streamTail=streamEnd}
+test = Cons 9 streamEnd
 
-test2 = 8 ≺ test
+test2 = 8 ≺ test -- equivalent to "Cons 8 test"
 
-main = print (streamHead test)
+main = print (streamHead (streamTail test2))
