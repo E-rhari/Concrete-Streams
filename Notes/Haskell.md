@@ -1,4 +1,5 @@
 [Intro to Haskell Syntax](https://andrew.gibiansky.com/blog/haskell/haskell-syntax/)
+[Learn You a Haskell for Great Good!](https://learnyouahaskell.github.io/starting-out.html)
 
 A general-purpose statically-typed pure functional programming language.
 - **General Purpose:** Design with no particular task in mind.
@@ -88,6 +89,12 @@ integer =
     in a + b
 ```
 The difference is that `where` is used for declarations while `len ... in` is used in expressions.
+
+In actuality, a Haskell variable is, in fact, no variable. It is a an constant, or rather, a function with no parameters that always returns the same thing. 
+```Haskell
+five = 5
+```
+In the example above, we can now use  `five` and `5` interchangeably. 
 ### Defining Functions
 `func :: a -> b`: Declaration of a function called `func` type of function that takes a single argument of type `a` and returns a value of type `b`. 
 `\argument -> expression`: Anonymous function (aka lambda) that has the argument `argument` and implements `expression`. The `\` and the `->` separates the arguments from the return value. 
@@ -137,7 +144,6 @@ add first second = first + second
 three :: Int
 three = add 1 2
 ```
-
 #### Calling Functions
 Functions are left associative, so calling
 ```Haskell
@@ -171,6 +177,33 @@ You can write operators for as many arguments as you want, however if you do so 
 ```
 It's possible to use any operator as a prefix.
 
+As a fun little fact, we can use non-operator funcionts in infix notation by calling it within backticks (\`).
+```Haskell
+chirashizusi :: Int -> Int -> Int
+chirashizushi a b = (a-b)*(a+b)
+
+6 `chirashizushi` 9
+```
+
+#### Precedence
+Function application has the highest precedence of them all. That is
+```Haskell
+succ 9 + max 5 4 + 1
+```
+is equivalent to
+```Haskell
+(succ 9) + (max 5 4) + 1
+```
+so expressions like
+```Haskell
+max succ 9 9 -- bad code
+```
+don't compile, and `succ 9*10` is equivalent to `(succ 9) * 10`, not `succ (9*10)`
+```Haskell
+succ 9*10    -- returns 100
+(succ 9)*10  -- returns 100
+succ (9*10)  -- returns 91
+```
 
 ### Pattern Matching and Branching
 The most common form of branching in Haskell is *pattern matching*. It inspects a variable looking for a set of fixed pattern in its value or structure, and execute different conde depending on it.
