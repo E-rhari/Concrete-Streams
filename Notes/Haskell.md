@@ -296,3 +296,83 @@ data MyType =
     ThirdConstructor Int Int
 ```
 
+### Parametric and Recursive Types
+
+# Error Catching
+All GHC errors are assigned unique identifiers, a dictionary for which is available at [https://errors.haskell.org/].
+
+# Lists
+Homogeneous data structures, which means that they store only elements of the same type. They can be defined as such
+```Haskell
+coolList :: [Integer]        -- as it's usual in Haskell, we don't need to specify a variable as a list
+coolList = [69, 101, 24, 3]
+```
+## List Operations
+### Append (++)
+Puts  a list in front of the other
+```Haskell
+[1,2,3,4,5] ++ [6,7,8,9]
+```
+As strings are also lists, we can concatenate strings like
+```Haskell
+"Wow, let's put " ++ "this" ++ " toghether"
+```
+### Cons (:)
+Puts an element at the head of the list
+```Haskell
+'A':" SMALL CAT"
+```
+Actually, this is how lists are created. `[1,2,3]` is syntax sugar for `1:2:3:[]`
+### Get (!!)
+Gets the element os a list in a given index
+```Haskell
+"OUMAE KUMIKO" !! 6 -- return 'K'
+```
+As if it were part of a normal programming language, lists' indexes start at 0.
+### Head (head)
+Gets the head of the list, that is, its first element.
+```Haskell
+head "KAWASHIMA MIDORI" -- returns 'K'
+```
+### Tail (tail)
+Gets the tail of the list, that is, the rest of the list that isn't the head
+```Haskell
+tail "KAWASHIMA MIDORI" -- "AWASHIMA MIDORI"
+```
+### Last (last)
+Gets the last element of the list
+```Haskell
+last "KAWASHIMA MIDORI" -- 'I'
+```
+### Init (init)
+Gets rest of the list that isn't the last element.
+```Haskell
+init "KAWASHIMA MIDORI" -- "KAWASHIMA MIDOR"
+```
+### Length (length)
+Gets the size of the list
+```Haskell
+length "KAWASHIMA MIDORI" -- 16
+```
+### Null (null)
+Checks if a list is empty
+```Haskell
+null "KAWASHIMA MIDORI" -- False
+null []                 -- True
+```
+### Take (take)
+Gets a sublist from the start to the end of the list
+```Haskell
+take 9 "KAWASHIMA MIDORI" -- "KAWASHIMA"
+```
+### Comparison
+It's possible to compare lists if the type within it is comparable. In such cases, they are compared in lexicographical order, that is, we scan trough the list until the elements making the comparison.
+```Haskell
+[3,2,1] > [2,1,0]    -- true
+[3,2,1] < [2,10,100] -- false
+[3,4,2] > [3,4]      -- true
+[2,4]   > [3,2,1]    -- false
+[3,4]  == [3,4]      -- true
+```
+### Other
+There are a bunch of other operator, but this is not a documentation so I'm done typing them.
