@@ -16,3 +16,6 @@ Icon?
 
 # Weird linux stuff
 *.directory
+
+# Non-proprietary
+*otherPeople's*
