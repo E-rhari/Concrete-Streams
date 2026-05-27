@@ -1,42 +1,19 @@
+module StreamData where
+
+
 data Stream a = Cons {streamHead::a, streamTail::Stream a}
     deriving Show
 
-{- -- This is an equivalent way of defining the data structure, however
--- it does not create the streamHead and streamTail deconstructors by default.
-data Stream a = Cons a (Stream a)
-    deriving Show 
--}
-
 (≺) :: a -> Stream a -> Stream a
-a ≺ s = Cons a s    -- To run "a ≺ s" is the same to excecute Cons a s,
-                    -- that is, it creates a new Stream with 'a' as the head and 's' as the tail
+a ≺ s = Cons a s    
 
-{- -- All Functions bellow do the same as streamHead <Stream> -- 
 
-takeHead :: Stream a -> a
-takeHead stream = case stream of
-    Cons h t -> h
-
-takeHead2 :: Stream a -> a
-takeHead2 (Cons h _) = h
-
-takeHead3 :: Stream a -> a
-takeHead3 s = streamHead s
--}
-
-{- -- A thing for practicing instances
-instance Functor (Stream a) where
-    fmap :: (a -> b) -> Stream a -> Stream b
-    fmap f s = undefined
--}
+instance (Num a) => Num (Stream a) where    -- somehow, defines operators for streams
+    (+) = zip (+)
 
 
 streamEnd :: a
 streamEnd = error "Theoratically Impossible"
 
-test :: Stream Int
-test = Cons 9 streamEnd
-
-test2 = 8 ≺ test -- equivalent to "Cons 8 test"
-
-main = print (streamHead (streamTail test2))
+naturals :: Stream Int
+naturals = 0 ≺ (naturals + 1)
