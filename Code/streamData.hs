@@ -16,7 +16,16 @@ instance Functor Stream where
 
 instance Applicative Stream where
     pure a = s where s = a ≺ s
-    s <*> t = ((shead s) (shead t)) ≺ ((stail s) <*> (stail t))
+    s <*> t = ((shead s) (shead t)) ≺ ((stail s) <*> (stail t)) -- ??
+
+instance (Num a) => Num (Stream a) where
+    (+) = szip (+)
+    (-) = szip (-)
+    (*) = szip (*)
+    abs = fmap abs
+    signum = fmap signum
+    negate = fmap negate
+    fromInteger i = pure (fromInteger i)
 
 -- "get" operator. Equivalent to !! in lists
 (#) :: Stream a -> Int -> a
