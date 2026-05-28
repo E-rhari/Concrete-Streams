@@ -1,18 +1,20 @@
-{- HLINT ignore "Redundant bracket" -}
 module StreamData where
 
+{- HLINT ignore "Redundant bracket" -}
+
+{- This code implements common haskell functions for Streams. Although it bothers me a litle,
+   it seems to be common practice in haskell to name such functions using the original function's
+   name preceded by the first letter of the type. That is, as 'map' becomes 'fmap' for functors,
+   'take' and such become 'stake' and ssuch for Streams, despite the word's meaning in english -}
+
+
+-- ---- Definition ----
 
 data Stream a = Cons {shead::a, stail::Stream a}
-    deriving Show
-
-
-infixr 5 ≺
-(≺) :: a -> Stream a -> Stream a
-a ≺ s = Cons a s    
 
 
 instance Functor Stream where
-    fmap f s = f (shead s) ≺ fmap f (stail s)
+    fmap f s = (f (shead s)) ≺ fmap f (stail s)
 
 instance Applicative Stream where
     pure a = s where s = a ≺ s
@@ -27,7 +29,20 @@ instance (Num a) => Num (Stream a) where
     negate = fmap negate
     fromInteger i = pure (fromInteger i)
 
--- "get" operator. Equivalent to !! in lists
+
+-- ---- Operations ----
+
+-- synonym for Cons so we can code it the same way we would write it
+infixr 5 ≺
+(≺) :: a -> Stream a -> Stream a
+a ≺ s = Cons a s
+
+-- synonym for ≺ because it's quite a drag to copypaste it
+infix 5 <:
+(<:) :: a -> Stream a -> Stream a 
+a <: s = a ≺ s
+
+-- "get" operator. Equivalent to !! for lists
 (#) :: Stream a -> Int -> a
 s # 0 = shead s
 s # n = (stail s) # (n-1)
