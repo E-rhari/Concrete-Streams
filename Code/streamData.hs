@@ -12,6 +12,8 @@ module StreamData where
 
 data Stream a = Cons {shead::a, stail::Stream a}
 
+instance (Show a) => Show (Stream a) where
+    show s = show (shead s) ++ ", " ++ show (stail s) -- runs forever and you really should use stake instead
 
 instance Functor Stream where
     fmap f s = (f (shead s)) ≺ fmap f (stail s)
