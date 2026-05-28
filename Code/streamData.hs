@@ -23,6 +23,13 @@ instance Applicative Stream where
 s # 0 = shead s
 s # n = (stail s) # (n-1)
 
-streamTake :: Int -> Stream a -> [a]
-streamTake 0 s = [shead s]
-streamTake n s = (shead s) : streamTake (n-1) (stail s)
+
+-- ---- Functions ----
+
+szip :: (a -> b -> c) -> (Stream a -> Stream b -> Stream c)
+szip f s t = pure f <*> s <*> t                                -- ??
+
+-- "take" function. Equivalent to take for lists
+stake :: Int -> Stream a -> [a]
+stake 1 s = [shead s]
+stake n s = (shead s) : stake (n-1) (stail s)
