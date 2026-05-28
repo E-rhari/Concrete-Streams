@@ -18,8 +18,11 @@ instance Applicative Stream where
     pure a = s where s = a ≺ s
     s <*> t = ((shead s) (shead t)) ≺ ((stail s) <*> (stail t))
 
-streamEnd :: a
-streamEnd = error "Theoratically Impossible"
+-- "get" operator. Equivalent to !! in lists
+(#) :: Stream a -> Int -> a
+s # 0 = shead s
+s # n = (stail s) # (n-1)
 
-naturals :: Stream Int
-naturals = 0 ≺ (naturals + 1)
+streamTake :: Int -> Stream a -> [a]
+streamTake 0 s = [shead s]
+streamTake n s = (shead s) : streamTake (n-1) (stail s)
