@@ -35,24 +35,32 @@ instance (Num a) => Num (Stream a) where
 -- ---- Operations ----
 
 -- synonym for Cons so we can code it the same way we would write it
-infixr 5 ≺
 (≺) :: a -> Stream a -> Stream a
 a ≺ s = Cons a s
+infixr 5 ≺
 
 -- synonym for ≺ because it's quite a drag to copypaste it
-infix 5 <:
 (<:) :: a -> Stream a -> Stream a 
 a <: s = a ≺ s
+infix 5 <:
 
 -- "get" operator. Equivalent to !! for lists
 (#) :: Stream a -> Int -> a
 s # 0 = shead s
 s # n = (stail s) # (n-1)
 
+-- equality operator. Can't overload it by instaciating Eq cause (==) returns Bool, not Stream Bool
+(#==) :: (Applicative i, Eq a) => i a -> i a -> i Bool
+(#==) = szip (==)
+infix 4 #==
+
+(#/=) :: (Applicative i, Eq a) => i a -> i a -> i Bool
+(#/=) = szip (/=)
+
 
 -- ---- Functions ----
 
-szip :: (a -> b -> c) -> (Stream a -> Stream b -> Stream c)
+szip :: (Applicative i) => (a -> b -> c) -> (i a -> i b -> i c)
 szip f s t = pure f <*> s <*> t                                -- ??
 
 -- "take" function. Equivalent to take for lists
