@@ -67,3 +67,18 @@ szip f s t = pure f <*> s <*> t                                -- ??
 stake :: Int -> Stream a -> [a]
 stake 1 s = [shead s]
 stake n s = (shead s) : stake (n-1) (stail s)
+
+-- returns a list with the first 10 elements of the Stream
+ssample :: Stream a -> [a]
+ssample s = stake 10 s
+
+
+-- ---- Streams ----
+
+nat = 0 ≺ nat + 1
+fac = 1 ≺ (nat+1)*fac
+fib = 0 ≺ fib' where fib' = 1 ≺ fib + fib'
+
+strue = pure True :: Stream Bool
+sfalse = pure False :: Stream Bool
+truefalse = True <: fmap not truefalse
