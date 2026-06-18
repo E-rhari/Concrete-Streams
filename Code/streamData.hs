@@ -4,8 +4,8 @@ module StreamData where
 
 {- This code implements common haskell functions for Streams. Although it bothers me a litle,
    it seems to be common practice in haskell to name such functions using the original function's
-   name preceded by the first letter of the type. That is, as 'map' becomes 'fmap' for functors,
-   'take' and such become 'stake' and ssuch for Streams, despite the word's meaning in english -}
+   name preceded by the first letter of the type. That is, as 'map' becomes 'fmap' for Functors,
+   'take' and such become 'stake' and ssuch for Streams, despite the latter's meaning in english -}
 
 
 -- ---- Definition ----
@@ -32,7 +32,7 @@ instance (Num a) => Num (Stream a) where
     fromInteger i = pure (fromInteger i)
 
 
--- ---- Operations ----
+-- ---- Operators ----
 
 -- synonym for Cons so we can code it the same way we would write it
 (≺) :: a -> Stream a -> Stream a
@@ -55,7 +55,7 @@ s \/ t = s ⋎ t
 infixr 5 \/
 
 
--- "get" operator. Equivalent to !! for lists
+-- "get" operator. Equivalent to !! for lists. 
 (#) :: Stream a -> Int -> a
 s # 0 = shead s
 s # n = (stail s) # (n-1)
@@ -79,13 +79,21 @@ stake :: Int -> Stream a -> [a]
 stake 1 s = [shead s]
 stake n s = (shead s) : stake (n-1) (stail s)
 
+-- "get" function. Equivalent to the # operator defined above but made to look similar to Hinze's article
+slookup :: Stream a -> Int -> a
+slookup s n = s # n
+
 -- returns a list with the first 10 elements of the Stream
 ssample :: Stream a -> [a]
 ssample s = stake 10 s
 
 -- generalization of the ⋎ operator for many streams
-sinterleave :: [Stream a] -> Stream a
-interleave (s:x) = head s <: interleave(x ++ [tail s])
+interleave :: [Stream a] -> Stream a
+interleave (s:x) = shead s <: interleave(x ++ [stail s])
+
+-- turns a function into a stream
+stabulate :: (Int -> a) -> Stream a
+stabulate f = f 0 ≺ stabulate (f . (+1))
 
 
 -- ---- Streams ----
@@ -101,6 +109,7 @@ truefalse = True ≺ fmap not truefalse
 plusneg = 1 ⋎ -1
 natdiv2 = nat ⋎ nat
 natmod2 = 0 ⋎ 1
+
 
 -- ---- Interleave Alternatives ----
 
