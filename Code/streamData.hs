@@ -42,7 +42,18 @@ infixr 5 ≺
 -- synonym for ≺ because it's quite a drag to copypaste it
 (<:) :: a -> Stream a -> Stream a 
 a <: s = a ≺ s
-infix 5 <:
+infixr 5 <:
+
+-- interleaves two streams
+(⋎) :: Stream a -> Stream a -> Stream a
+s ⋎ t = shead s ≺ t ⋎ stail s
+infixr 5 ⋎
+
+-- synonym for ⋎
+(\/) :: Stream a -> Stream a -> Stream a
+s \/ t = s ⋎ t
+infixr 5 \/
+
 
 -- "get" operator. Equivalent to !! for lists
 (#) :: Stream a -> Int -> a
@@ -72,6 +83,10 @@ stake n s = (shead s) : stake (n-1) (stail s)
 ssample :: Stream a -> [a]
 ssample s = stake 10 s
 
+-- generalization of the ⋎ operator for many streams
+sinterleave :: [Stream a] -> Stream a
+interleave (s:x) = head s <: interleave(x ++ [tail s])
+
 
 -- ---- Streams ----
 
@@ -81,4 +96,20 @@ fib = 0 ≺ fib' where fib' = 1 ≺ fib + fib'
 
 strue = pure True :: Stream Bool
 sfalse = pure False :: Stream Bool
-truefalse = True <: fmap not truefalse
+truefalse = True ≺ fmap not truefalse
+
+plusneg = 1 ⋎ -1
+natdiv2 = nat ⋎ nat
+natmod2 = 0 ⋎ 1
+
+-- ---- Interleave Alternatives ----
+
+-- Equal to nat
+bin = 0 ≺ 2*bin+1 ⋎ 2*bin+2 -- despite its name, bin is not the sequence of naturals in binary, but the regular naturals constructed through the idea of binary numbers
+
+seven = 0 ≺ seven+2
+sodd = 1 ≺ sodd+2
+evenodd = seven ⋎ sodd
+
+-- Equal to truefalse
+truefalse' = True ≺ pure False ⋎ pure True
