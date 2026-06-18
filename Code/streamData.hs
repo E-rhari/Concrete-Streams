@@ -95,6 +95,14 @@ interleave (s:x) = shead s <: interleave(x ++ [stail s])
 stabulate :: (Int -> a) -> Stream a
 stabulate f = f 0 ≺ stabulate (f . (+1))
 
+-- creates a stream by recursing a function starting at a given seed
+srecurse :: (a -> a) -> a -> Stream a
+srecurse f a = s where s = a ≺ fmap f s
+
+-- creates a stream by repeatedly applying a given function to a given initial seed
+siterate :: (a -> a) -> a -> Stream a
+siterate f a = a ≺ siterate f (f a)
+
 
 -- ---- Streams ----
 
