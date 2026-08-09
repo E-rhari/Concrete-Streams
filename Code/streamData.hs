@@ -103,6 +103,10 @@ srecurse f a = s where s = a ≺ fmap f s
 siterate :: (a -> a) -> a -> Stream a
 siterate f a = a ≺ siterate f (f a)
 
+--
+sunfold :: (s -> a) -> (s -> s) -> (s -> Stream a)
+sunfold g f a = g a ≺ sunfold g f (f a)  
+
 
 -- ---- Streams ----
 
