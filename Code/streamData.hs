@@ -72,7 +72,7 @@ infix 4 #==
 -- ---- Functions ----
 
 szip :: (Applicative i) => (a -> b -> c) -> (i a -> i b -> i c)
-szip f s t = pure f <*> s <*> t                                -- ??
+szip f s t = pure f <*> s <*> t 
 
 -- "take" function. Equivalent to take for lists
 stake :: Int -> Stream a -> [a]
