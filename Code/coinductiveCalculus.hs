@@ -34,6 +34,7 @@ instance Fractional a => Fractional (CalculusStream a) where
 
 
 ex = 1 <: ex
+
 sine = 0 <: cosine
     where cosine = 1 <: - sine
 cosine = 1 <: -sine
