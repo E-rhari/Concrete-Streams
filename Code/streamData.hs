@@ -54,6 +54,10 @@ infixr 5 ⋎
 s \/ t = s ⋎ t
 infixr 5 \/
 
+-- Convolution operator. Made during an Programming Algebra class by the hands of another student. 
+(°) :: (Num a) => Stream a -> Stream a -> Stream a
+s ° t = (shead s * shead t) <:  (stail t)*(sconst(shead s)) + ((stail s) ° t) 
+
 
 -- "get" operator. Equivalent to !! for lists. 
 (#) :: Stream a -> Int -> a
