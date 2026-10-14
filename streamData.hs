@@ -23,14 +23,16 @@ instance Applicative Stream where
     s <*> t = ((shead s) (shead t)) ≺ ((stail s) <*> (stail t)) -- ??
 
 instance (Num a) => Num (Stream a) where
-    (+) = szip (+)
-    (-) = szip (-)
-    (*) = szip (*)
-    abs = fmap abs
+    s + t = (shead(s) + shead(t)) <: (stail(s) + stail(t))
+    s - t = (shead(s) - shead(t)) <: (stail(s) - stail(t))
+    s * t = (shead(s) * shead(t)) <: (stail(s) * stail(t))
+    abs s = (abs (shead s)) <: (abs (stail s))
     signum = fmap signum
     negate = fmap negate
     fromInteger i = pure (fromInteger i)
 
+sconst :: a -> Stream a 
+sconst x = x <: sconst x
 
 -- ---- Operators ----
 
@@ -116,7 +118,11 @@ sunfold g f a = g a ≺ sunfold g f (f a)
 
 nat = 0 ≺ nat + 1
 fac = 1 ≺ (nat+1)*fac
-fib = 0 ≺ fib' where fib' = 1 ≺ fib + fib'
+
+fib = 0 ≺ fib'
+fib' = 1 ≺ fib + fib'
+
+fib_test = 0 <: 1 <: (fib_test + stail(fib_test)) 
 
 strue = pure True :: Stream Bool
 sfalse = pure False :: Stream Bool

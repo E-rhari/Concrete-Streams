@@ -1,1 +1,0 @@
-Infinite sequence of elements.
